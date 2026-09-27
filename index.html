@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お誕生日ページを作ろう - はじめてのサイト作成</title>
+  <style>
+    :root {
+      --navy-deep:   #07101F;
+      --navy:        #0D1B35;
+      --navy-card:   #112040;
+      --navy-light:  #1A2F55;
+      --orange:      #FF7B1C;
+      --orange-pale: #FF9B4E;
+      --orange-dim:  rgba(255,123,28,0.18);
+      --orange-dim2: rgba(255,123,28,0.08);
+      --white:       #FFFFFF;
+      --text-sub:    #A8C2E8;
+      --border:      rgba(255,123,28,0.22);
+      --border-dim:  rgba(255,255,255,0.08);
+      --radius:      14px;
+      --radius-sm:   8px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Noto Sans JP', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    /* ===================== MASCOT IMAGES ===================== */
+    .dog-img {
+      display: block;
+      width: 220px;
+      height: auto;
+      flex-shrink: 0;
+      mix-blend-mode: screen;
+      object-fit: contain;
+    }
+    .dog-img.lg { width: 280px; }
+    .dog-img.sm { width: 130px; }
+
+    /* ===================== HERO ===================== */
+    .hero {
+      background: linear-gradient(160deg, #07101F 0%, #0D1B35 50%, #0F2248 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 24px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(255,123,28,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .hero-dog-wrap {
+      display: inline-block;
+      margin-bottom: 16px;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+    .hero h1 {
+      font-size: clamp(34px, 6vw, 58px);
+      font-weight: 900;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .hero h1 .hi { color: var(--orange); }
+    .hero-sub {
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--text-sub);
+      margin-bottom: 0;
+      font-weight: 400;
+    }
+
+    /* ===================== KEY POINT BANNER ===================== */
+    .key-banner {
+      background: var(--navy-deep);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 40px 24px 48px;
+    }
+    .key-banner-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .key-banner-label {
+      display: inline-block;
+      background: var(--orange-dim);
+      border: 1px solid var(--border);
+      color: var(--orange-pale);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .key-banner-title {
+      font-size: clamp(20px, 3.4vw, 30px);
+      font-weight: 900;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .key-banner-title .o { color: var(--orange); }
+    .key-term-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 16px;
+      text-align: left;
+    }
+    .key-term {
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+    }
+    .key-term-icon { font-size: 26px; margin-bottom: 10px; }
+    .key-term-name { font-weight: 800; font-size: 17px; color: var(--white); margin-bottom: 6px; }
+    .key-term-name .o { color: var(--orange); }
+    .key-term-desc { font-size: 14px; color: var(--text-sub); }
+
+    /* ===================== TAB NAV ===================== */
+    .tab-nav-wrap {
+      background: var(--navy-deep);
+      border-bottom: 1px solid var(--border-dim);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .tab-nav {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+      padding: 0 16px;
+    }
+    .tab-nav::-webkit-scrollbar { display: none; }
+    .tab-btn {
+      flex-shrink: 0;
+      padding: 16px 22px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-sub);
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      transition: color 0.18s, border-color 0.18s;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+    .tab-btn:hover { color: var(--orange-pale); }
+    .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
+
+    /* ===================== CONTENT ===================== */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+    .page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 52px 24px 80px;
+    }
+
+    /* ===================== SECTION HEADER ===================== */
+    .sec-tag {
+      display: inline-block;
+      background: var(--orange-dim);
+      border: 1px solid var(--border);
+      color: var(--orange-pale);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+    .sec-h2 {
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .sec-h2 .o { color: var(--orange); }
+    .sec-lead {
+      font-size: 17px;
+      color: var(--text-sub);
+      margin-bottom: 40px;
+      max-width: 640px;
+    }
+
+    /* ===================== CARD ===================== */
+    .card {
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .card-h {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card-h .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--orange);
+      flex-shrink: 0;
+    }
+
+    /* ===================== STEP CARD ===================== */
+    .step-wrap { display: flex; flex-direction: column; gap: 16px; }
+    .step {
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      transition: border-color 0.18s;
+    }
+    .step:hover { border-color: var(--border); }
+    .step-num-badge {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: var(--orange);
+      color: white;
+      font-size: 18px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-body { flex: 1; min-width: 0; }
+    .step-body h3 {
+      font-size: 19px;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .step-body p { font-size: 15px; color: var(--text-sub); }
+
+    /* ===================== ANALOGY CARDS (家・住所・配達) ===================== */
+    .analogy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+      gap: 16px;
+      margin: 24px 0 32px;
+    }
+    .analogy-card {
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+    }
+    .analogy-icon { font-size: 34px; margin-bottom: 12px; }
+    .analogy-title { font-weight: 800; font-size: 16px; color: var(--white); margin-bottom: 4px; }
+    .analogy-sub { font-size: 12px; color: var(--orange-pale); font-weight: 700; margin-bottom: 10px; }
+    .analogy-desc { font-size: 14px; color: var(--text-sub); }
+
+    /* ===================== MERMAID WRAP ===================== */
+    .mermaid-wrap {
+      background: var(--navy-deep);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 20px;
+      overflow-x: auto;
+      margin: 12px 0 8px;
+    }
+    .mermaid-wrap svg { max-width: 100%; }
+
+    /* ===================== FOLDER DIAGRAM ===================== */
+    .folder-diagram {
+      background: var(--navy-deep);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      padding: 20px 24px;
+      margin: 16px 0;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 15px;
+    }
+    .folder-root { font-weight: 800; color: var(--orange-pale); margin-bottom: 10px; }
+    .folder-item { padding: 6px 0 6px 28px; color: var(--white); border-left: 2px dashed var(--border-dim); margin-left: 8px; }
+    .folder-item:last-child { border-left: 2px dashed transparent; }
+
+    /* ===================== TABLE ===================== */
+    .tbl {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+    .tbl th {
+      background: var(--navy-deep);
+      padding: 12px 18px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-sub);
+      border-bottom: 1px solid var(--border-dim);
+    }
+    .tbl td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-dim);
+      color: var(--white);
+      vertical-align: middle;
+    }
+    .tbl tr:last-child td { border-bottom: none; }
+
+    /* ===================== CODE / PROMPT ===================== */
+    .code-block {
+      background: var(--navy-deep);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      padding: 18px 22px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 14px;
+      color: var(--orange-pale);
+      line-height: 1.8;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+
+    .prompt-box {
+      background: var(--navy-deep);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 22px 26px;
+      position: relative;
+      margin: 12px 0;
+      max-height: 420px;
+      overflow-y: auto;
+    }
+    .prompt-box p {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13.5px;
+      line-height: 1.9;
+      color: #D0E8FF;
+      white-space: pre-wrap;
+    }
+    .prompt-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .prompt-label-tag {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--orange-pale);
+    }
+    .copy-btn {
+      margin-left: auto;
+      background: var(--orange-dim);
+      border: 1px solid var(--border);
+      color: var(--orange-pale);
+      padding: 4px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .copy-btn:hover { background: rgba(255,123,28,0.3); }
+
+    /* ===================== PROMPT TABS (ひな形4種) ===================== */
+    .prompt-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .prompt-tab-btn {
+      background: var(--navy-deep);
+      border: 1px solid var(--border-dim);
+      color: var(--text-sub);
+      padding: 10px 18px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .prompt-tab-btn:hover { border-color: var(--border); color: var(--orange-pale); }
+    .prompt-tab-btn.active { background: var(--orange); border-color: var(--orange); color: white; }
+    .prompt-tab-content { display: none; }
+    .prompt-tab-content.active { display: block; }
+
+    /* ===================== INFO / WARN BOX ===================== */
+    .info-box {
+      display: flex;
+      gap: 12px;
+      background: var(--orange-dim2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 14px;
+      color: var(--text-sub);
+      margin: 14px 0;
+      line-height: 1.65;
+    }
+    .warn-box {
+      display: flex;
+      gap: 12px;
+      background: rgba(255,200,0,0.07);
+      border: 1px solid rgba(255,200,0,0.25);
+      border-radius: var(--radius-sm);
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #FFD060;
+      margin: 14px 0;
+      line-height: 1.65;
+    }
+
+    /* ===================== CHECKLIST ===================== */
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--border-dim);
+      font-size: 15px;
+      color: var(--text-sub);
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist li::before {
+      content: '';
+      width: 20px; height: 20px;
+      min-width: 20px;
+      border: 2px solid var(--border);
+      border-radius: 6px;
+      margin-top: 2px;
+    }
+
+    /* ===================== TROUBLE / FAQ ===================== */
+    .trouble-item {
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 14px;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .tr-icon { font-size: 28px; }
+    .tr-q { font-weight: 800; font-size: 17px; color: var(--white); margin-bottom: 10px; }
+    .tr-a { font-size: 15px; color: var(--text-sub); line-height: 1.75; }
+
+    .faq-item {
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .faq-btn {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      padding: 20px 24px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      transition: background 0.15s;
+    }
+    .faq-btn:hover { background: var(--navy-light); }
+    .faq-q-badge {
+      width: 30px; height: 30px;
+      border-radius: 8px;
+      background: var(--orange);
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .faq-arrow { margin-left: auto; color: var(--text-sub); transition: transform 0.2s; font-size: 13px; }
+    .faq-item.open .faq-arrow { transform: rotate(180deg); }
+    .faq-answer { display: none; padding: 0 24px 22px 68px; font-size: 15px; color: var(--text-sub); line-height: 1.75; }
+    .faq-item.open .faq-answer { display: block; }
+
+    /* ===================== SECTION WITH MASCOT ===================== */
+    .dog-section {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 36px;
+    }
+    .dog-section-text { flex: 1; }
+    @media (max-width: 580px) {
+      .dog-section { flex-direction: column; text-align: center; }
+    }
+
+    /* ===================== NOTICE CARD ===================== */
+    .notice {
+      background: linear-gradient(135deg, var(--navy-deep), var(--navy-card));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin-top: 32px;
+    }
+    .notice p { font-size: 15px; color: var(--text-sub); line-height: 1.7; }
+    .notice strong { color: var(--white); }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      background: var(--navy-deep);
+      border-top: 1px solid var(--border-dim);
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 13px;
+      color: var(--text-sub);
+    }
+    footer a { color: var(--orange-pale); text-decoration: none; }
+
+    /* ===================== RESPONSIVE ===================== */
+    @media (max-width: 600px) {
+      .tab-btn { font-size: 14px; padding: 14px 16px; }
+      .page { padding: 32px 16px 60px; }
+      .card, .step, .analogy-card { padding: 18px 20px; }
+      body { font-size: 17px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="hero-content">
+    <div class="hero-dog-wrap">
+      <img src="potz1.png" class="dog-img lg" alt="マスコットキャラクター" />
+    </div>
+    <h1>お誕生日<br><span class="hi">お祝いページ</span>を<br>作ろう</h1>
+    <p class="hero-sub">パソコン初心者でも大丈夫。60分でできる、<br>世界にひとつだけの贈りもの。</p>
+  </div>
+</header>
+
+<!-- ===================== KEY POINT BANNER ===================== -->
+<section class="key-banner">
+  <div class="key-banner-inner">
+    <div class="key-banner-label">これだけは覚えて</div>
+    <p class="key-banner-title">
+      サイトのファイルを、<span class="o">インターネット上の置き場所</span>に置くと、<br>
+      ほかの人も見られるようになります。
+    </p>
+    <div class="key-term-grid">
+      <div class="key-term">
+        <div class="key-term-icon">📄</div>
+        <div class="key-term-name"><span class="o">HTML</span> ＝ ページの中身</div>
+        <div class="key-term-desc">文章や写真、飾りつけが書かれたファイルそのもの。</div>
+      </div>
+      <div class="key-term">
+        <div class="key-term-icon">📦</div>
+        <div class="key-term-name"><span class="o">Netlify</span> ＝ 置き場所</div>
+        <div class="key-term-desc">作ったファイルを置くと、インターネットに公開してくれるサービス。</div>
+      </div>
+      <div class="key-term">
+        <div class="key-term-icon">📍</div>
+        <div class="key-term-name"><span class="o">URL</span> ＝ 住所</div>
+        <div class="key-term-desc">公開されたページの場所を示す文字列。人に伝えると見てもらえる。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TAB NAV ===================== -->
+<nav class="tab-nav-wrap">
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('step1', this)">ステップ１</button>
+    <button class="tab-btn"        onclick="switchTab('step2', this)">ステップ２</button>
+    <button class="tab-btn"        onclick="switchTab('step3', this)">ステップ３</button>
+    <button class="tab-btn"        onclick="switchTab('step4', this)">ステップ４</button>
+    <button class="tab-btn"        onclick="switchTab('check', this)">チェックリスト</button>
+    <button class="tab-btn"        onclick="switchTab('qa',    this)">Q&amp;A</button>
+  </div>
+</nav>
+
+<!-- ===================== STEP 1 ===================== -->
+<div id="step1" class="tab-content active">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz4.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">STEP 1</div>
+        <h2 class="sec-h2">サイトが<span class="o">見られる仕組み</span></h2>
+        <p class="sec-lead">自分のパソコンで作ったページを、家族や友だちに見てもらうには何が必要か。まずは全体の流れをイラストで確認しましょう。</p>
+      </div>
+    </div>
+
+    <div class="analogy-grid">
+      <div class="analogy-card">
+        <div class="analogy-icon">🏠</div>
+        <div class="analogy-title">家</div>
+        <div class="analogy-sub">＝ HTML</div>
+        <div class="analogy-desc">サイトの中身（文章・写真）が入っている「家」そのもの。</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-icon">📍</div>
+        <div class="analogy-title">住所</div>
+        <div class="analogy-sub">＝ URL</div>
+        <div class="analogy-desc">家がある場所を示す「住所」。相手に伝えれば訪ねてこられる。</div>
+      </div>
+      <div class="analogy-card">
+        <div class="analogy-icon">🚚</div>
+        <div class="analogy-title">配達サービス</div>
+        <div class="analogy-sub">＝ Netlify</div>
+        <div class="analogy-desc">住所を調べて、家の中身（ページ）をちゃんと届けてくれるサービス。</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>全体の流れ</div>
+      <div class="mermaid-wrap">
+        <pre class="mermaid">
+flowchart TB
+  subgraph A["① つくる｜自分のパソコン"]
+    G["Geminiにお願いする<br/>「こんなサイトをつくって」"]
+    H["サイトのファイルを保存<br/>index.html"]
+    L["自分のブラウザで確認<br/>この段階では、まだネットに公開されていない"]
+    G --> H --> L
+  end
+  subgraph B["② 公開する｜インターネット"]
+    N["Netlify Dropにファイルを置く<br/>サイトを保管・配信する場所"]
+    U["公開設定を確認する<br/>サイトの住所＝URLが使える"]
+    N --> U
+  end
+  subgraph C["③ 見てもらう｜ほかの人のスマホ・パソコン"]
+    V["共有されたURLを開く"]
+    D["ブラウザがファイルを受け取り<br/>サイトとして表示する"]
+    V --> D
+  end
+  H -->|"フォルダごとアップロード"| N
+  U -->|"URLを相手に伝える"| V
+  V -->|"このページをください"| N
+  N -->|"HTMLや画像を届ける"| D
+        </pre>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <span style="font-size:18px;flex-shrink:0">💡</span>
+      <span>いちど公開すれば、あとはNetlifyが24時間ページを届けてくれます。<strong>自分のパソコンの電源を切っても、みんなに見てもらえます。</strong></span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== STEP 2 ===================== -->
+<div id="step2" class="tab-content">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz3.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">STEP 2</div>
+        <h2 class="sec-h2"><span class="o">AI</span>でつくる（Gemini Canvas）</h2>
+        <p class="sec-lead">下のひな形プロンプトの【　】を埋めるだけ。あとはGeminiにお任せです。</p>
+      </div>
+    </div>
+
+    <div class="step-wrap" style="margin-bottom:32px">
+      <div class="step">
+        <div class="step-num-badge">1</div>
+        <div class="step-body">
+          <h3>gemini.google.com を開きログイン</h3>
+          <p>お使いのGoogleアカウントでログインしてください。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">2</div>
+        <div class="step-body">
+          <h3>「ツール」→「Canvas」を選ぶ</h3>
+          <p>入力欄の下にあるメニューからCanvasを選びます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">3</div>
+        <div class="step-body">
+          <h3>下の雛形プロンプトの【　】を埋めて貼り付け、送信</h3>
+          <p>4種類のうち、贈る相手に合ったものを選んでください。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">4</div>
+        <div class="step-body">
+          <h3>右側のプレビューで確認、「お祝いする🎉」を押してみる</h3>
+          <p>アニメーションがちゃんと動くか、その場でチェックできます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">5</div>
+        <div class="step-body">
+          <h3>手直しは普通の言葉で1つずつ</h3>
+          <p>例：「文字を大きくして」「写真をもう少し丸くして」など、一度に1つだけお願いすると失敗しにくいです。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>雛形プロンプト（コピーして使ってください）</div>
+      <div class="prompt-tabs">
+        <button class="prompt-tab-btn active" onclick="switchPromptTab('pt1', this)">① 家族向け</button>
+        <button class="prompt-tab-btn" onclick="switchPromptTab('pt2', this)">② 友だち向け</button>
+        <button class="prompt-tab-btn" onclick="switchPromptTab('pt3', this)">③ 恩師・先輩向け</button>
+        <button class="prompt-tab-btn" onclick="switchPromptTab('pt4', this)">④ ペット向け</button>
+      </div>
+
+      <!-- Prompt 1: 家族向け -->
+      <div id="pt1" class="prompt-tab-content active">
+        <div class="prompt-header">
+          <span class="prompt-label-tag">① 家族向け（あたたか）</span>
+          <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+        </div>
+        <div class="prompt-box"><p>あなたはWebデザインの先生です。
+初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+お誕生日をお祝いするページを作ってください。
+
+■ お祝いする人
+・名前：【例：おかあさん】
+・自分との関係：【例：母】
+・年齢（書かない場合は空欄）：【例：80】
+
+■ 伝えたいメッセージ（3〜5行）
+【例：
+いつも見守ってくれてありがとう。
+小さいころ作ってくれたカレーの味、今でも覚えています。
+これからも元気で、一緒に笑っていてね。】
+
+■ ページの雰囲気
+・テーマカラー：【例：ピンクとゴールド】
+・雰囲気：【例：あたたかい／かわいい／上品】
+
+■ 写真（3枚）
+・写真1の説明：【例：家族旅行の写真】
+・写真2の説明：【例：誕生日ケーキ】
+・写真3の説明：【例：昔の写真】
+※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
+※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+
+■ 入れてほしい演出
+1. ページを開くと「Happy Birthday 名前」が大きくふわっと表示される
+2. メッセージが1文字ずつタイプライターのように表示される
+3. 写真3枚がカードで並び、マウスを乗せると少し拡大する
+4. 「お祝いする🎉」ボタンを押すと紙吹雪が画面いっぱいに舞う
+5. 背景に風船やハートがゆっくり浮かぶ
+
+■ 条件
+・外部ライブラリは使わない
+・スマホでもきれいに見える
+・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
+・コードは長くなりすぎないようにする</p></div>
+      </div>
+
+      <!-- Prompt 2: 友だち向け -->
+      <div id="pt2" class="prompt-tab-content">
+        <div class="prompt-header">
+          <span class="prompt-label-tag">② 友だち向け（ポップ）</span>
+          <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+        </div>
+        <div class="prompt-box"><p>あなたはWebデザインの先生です。
+初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+お誕生日をお祝いするページを作ってください。
+
+■ お祝いする人
+・名前：【例：ゆうき】
+・自分との関係：【例：友だち】
+・年齢（書かない場合は空欄）：【例：25】
+
+■ 伝えたいメッセージ（3〜5行）
+【例：
+出会ってくれてありがとう！
+いつも笑わせてくれて、一緒にいると元気になる。
+これからもたくさん遊ぼうね！
+25歳もハッピーな1年になりますように。】
+
+■ ページの雰囲気
+・テーマカラー：【例：ビビッドピンクと黄色】
+・雰囲気：【例：カラフル／ポップ／元気いっぱい】
+
+■ 写真（3枚）
+・写真1の説明：【例：一緒に旅行した写真】
+・写真2の説明：【例：誕生日パーティーの写真】
+・写真3の説明：【例：おもしろい顔をしている写真】
+※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
+※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+
+■ 入れてほしい演出
+1. ページを開くと絵文字がたくさん飛び跳ねながら「Happy Birthday 名前」が大きく表示される
+2. メッセージがカラフルな文字色で1文字ずつ表示される
+3. 「お祝いする🎉」ボタンを押すとケーキのろうそくが消えて「おめでとう！」の文字が画面に飛び出す
+4. 思い出の写真3枚がスライドショーのように自動で切り替わる
+5. 背景にカラフルな紙吹雪や星がキラキラ舞う
+
+■ 条件
+・外部ライブラリは使わない
+・スマホでもきれいに見える
+・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
+・コードは長くなりすぎないようにする</p></div>
+      </div>
+
+      <!-- Prompt 3: 恩師・先輩向け -->
+      <div id="pt3" class="prompt-tab-content">
+        <div class="prompt-header">
+          <span class="prompt-label-tag">③ 恩師・先輩向け（上品）</span>
+          <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+        </div>
+        <div class="prompt-box"><p>あなたはWebデザインの先生です。
+初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+お誕生日をお祝いするページを作ってください。
+
+■ お祝いする人
+・名前：【例：田中先生】
+・自分との関係：【例：恩師】
+・年齢（書かない場合は空欄）：【例：空欄】
+
+■ 伝えたいメッセージ（3〜5行）
+【例：
+先生に教えていただいたことが、今の私の支えになっています。
+厳しくも温かいお言葉、今でも忘れません。
+これからもどうぞお元気で、お誕生日おめでとうございます。】
+
+■ ページの雰囲気
+・テーマカラー：【例：紺とゴールド】
+・雰囲気：【例：上品／落ち着いた／格式高い】
+
+■ 写真（3枚）
+・写真1の説明：【例：卒業式で撮った写真】
+・写真2の説明：【例：授業や部活動の写真】
+・写真3の説明：【例：先生の似顔絵や贈り物の写真】
+※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
+※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+
+■ 入れてほしい演出
+1. ページを開くと「Happy Birthday 名前」が明朝体でゆっくりと上品に表示される
+2. メッセージは手紙の便箋のようなデザインの中に、1文字ずつ丁寧に表示される
+3. 写真3枚は額縁のようなフレームで並び、マウスを乗せると静かに浮き上がる
+4. 「お祝いする🎉」ボタンを押すと花びらがゆっくりと画面に舞い落ちる
+5. 背景に星がきらめくアニメーションがゆっくりと流れる
+
+■ 条件
+・外部ライブラリは使わない
+・スマホでもきれいに見える
+・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
+・コードは長くなりすぎないようにする</p></div>
+      </div>
+
+      <!-- Prompt 4: ペット向け -->
+      <div id="pt4" class="prompt-tab-content">
+        <div class="prompt-header">
+          <span class="prompt-label-tag">④ ペット向け（かわいい）</span>
+          <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
+        </div>
+        <div class="prompt-box"><p>あなたはWebデザインの先生です。
+初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+ペットのお誕生日をお祝いするページを作ってください。
+
+■ お祝いする子
+・名前：【例：ポチ】
+・自分との関係：【例：愛犬】
+・年齢：【例：3】
+
+■ 伝えたいメッセージ（3〜5行）
+【例：
+ポチ、3歳のお誕生日おめでとう！
+いつもそばにいてくれてありがとう。
+お散歩もお昼寝も、一緒にいられて幸せです。
+これからも元気いっぱい過ごそうね。】
+
+■ ページの雰囲気
+・テーマカラー：【例：クリーム色とベージュ】
+・雰囲気：【例：かわいい／ほのぼの／あたたかい】
+
+■ 写真（3枚）
+・写真1の説明：【例：お昼寝している写真】
+・写真2の説明：【例：お散歩中の写真】
+・写真3の説明：【例：おやつを食べている写真】
+※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
+※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+
+■ 入れてほしい演出
+1. ページを開くと「名前、〇歳おめでとう🐾」が大きくふわっと表示される
+2. メッセージが1文字ずつやさしく表示される
+3. 写真3枚がカードで並び、マウスを乗せると吹き出しでひと言セリフが出る（例：「ごはんまだ？」）
+4. 「お祝いする🎉」ボタンを押すと肉球や骨のアイコンが画面いっぱいに舞う
+5. 背景に肉球や骨のアイコンがゆっくり浮かぶ
+
+■ 条件
+・外部ライブラリは使わない
+・スマホでもきれいに見える
+・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
+・コードは長くなりすぎないようにする</p></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== STEP 3 ===================== -->
+<div id="step3" class="tab-content">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz5.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">STEP 3</div>
+        <h2 class="sec-h2">手元で<span class="o">確認する</span></h2>
+        <p class="sec-lead">Canvasで作ったコードを、自分のパソコンに保存してブラウザで開いてみましょう。</p>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <span style="flex-shrink:0">⚠️</span>
+      <span>先に「拡張子を表示する」設定をしておきましょう。エクスプローラーの「表示」タブ→「ファイル名拡張子」にチェックを入れます。これをしないと、あとで <code>.html</code> か <code>.txt</code> か見分けがつきません。</span>
+    </div>
+
+    <div class="step-wrap" style="margin:20px 0 28px">
+      <div class="step">
+        <div class="step-num-badge">1</div>
+        <div class="step-body">
+          <h3>デスクトップに「birthday」フォルダを作る</h3>
+          <p>右クリック→「新規作成」→「フォルダー」から作成します。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">2</div>
+        <div class="step-body">
+          <h3>Canvasのコードをメモ帳に貼って保存する</h3>
+          <p>Canvasのコードを全部コピー→メモ帳に貼り付け→「名前を付けて保存」で <strong>index.html</strong> という名前にし、種類は「すべてのファイル」、文字コードは「UTF-8」を選びます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">3</div>
+        <div class="step-body">
+          <h3>写真3枚を同じフォルダに入れる</h3>
+          <p>お祝いに使いたい写真を3枚選び、ファイル名を <strong>photo1.jpg / photo2.jpg / photo3.jpg</strong> に変更してbirthdayフォルダに入れます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">4</div>
+        <div class="step-body">
+          <h3>index.html をダブルクリック</h3>
+          <p>ブラウザでページが開けば成功です。「お祝いする🎉」ボタンも押してみましょう。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>フォルダの中身（完成イメージ）</div>
+      <div class="folder-diagram">
+        <div class="folder-root">📁 birthday</div>
+        <div class="folder-item">📄 index.html</div>
+        <div class="folder-item">🖼 photo1.jpg</div>
+        <div class="folder-item">🖼 photo2.jpg</div>
+        <div class="folder-item">🖼 photo3.jpg</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== STEP 4 ===================== -->
+<div id="step4" class="tab-content">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz2.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">STEP 4</div>
+        <h2 class="sec-h2"><span class="o">公開する</span>（Netlify Drop）</h2>
+        <p class="sec-lead">フォルダをドラッグするだけで、世界中から見られるページになります。</p>
+      </div>
+    </div>
+
+    <div class="step-wrap" style="margin-bottom:24px">
+      <div class="step">
+        <div class="step-num-badge">1</div>
+        <div class="step-body">
+          <h3>Netlify Dropを開く</h3>
+          <div class="code-block">https://app.netlify.com/drop</div>
+          <p>ログインしておくのがおすすめです。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">2</div>
+        <div class="step-body">
+          <h3>「birthday」フォルダをまるごとドラッグ</h3>
+          <p>画面の点線の枠の中に、フォルダごとドロップします。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">3</div>
+        <div class="step-body">
+          <h3>表示されたURLを確認する</h3>
+          <p>アップロードが終わると、公開されたページのURL（住所）が表示されます。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">4</div>
+        <div class="step-body">
+          <h3>スマホでURLを開く</h3>
+          <p>自分のパソコンの外からもちゃんと見られることを確認しましょう。</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num-badge">5</div>
+        <div class="step-body">
+          <h3>更新するとき</h3>
+          <p>直したフォルダを同じサイトに再アップロードし、スマホ側のページを再読み込みすれば最新版になります。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      <span style="flex-shrink:0">⚠️</span>
+      <span>ログインせずに公開すると、一時的なパスワードが付いたり、設定によって非公開になっていることがあります。ログインしていない別のブラウザでURLを開いて、パスワードなしで見られるか確認してください。</span>
+    </div>
+
+    <div class="info-box">
+      <span style="font-size:18px;flex-shrink:0">📖</span>
+      <span>公式ガイド：<a href="https://docs.netlify.com/start/quickstarts/netlify-drop-quickstart/" style="color:var(--orange-pale)" target="_blank" rel="noopener">Netlify Drop Quickstart</a></span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== CHECKLIST ===================== -->
+<div id="check" class="tab-content">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz1.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">CHECK</div>
+        <h2 class="sec-h2">最終<span class="o">チェックリスト</span></h2>
+        <p class="sec-lead">すべてにチェックがついたら、あなたのお誕生日ページは完成です。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>完成チェックリスト</div>
+      <ul class="checklist">
+        <li>つくる：Gemini Canvasでページのコードができた</li>
+        <li>保存：index.html という名前でUTF-8保存できた</li>
+        <li>写真：photo1〜3.jpg を同じフォルダに入れた</li>
+        <li>公開：Netlify Dropでアップロードし、URLが表示された</li>
+        <li>スマホで見られた：自分のパソコン以外の端末でも表示できた</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== Q&A ===================== -->
+<div id="qa" class="tab-content">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz3.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">Q&amp;A</div>
+        <h2 class="sec-h2">よくある<span class="o">トラブル</span></h2>
+        <p class="sec-lead">困ったら、まずここを確認してください。</p>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        <div class="faq-q-badge">Q</div>写真が出ない
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-answer">ファイル名の拡張子を確認してください。<code>.png</code> と <code>.jpg</code> を間違えていたり、<code>.JPG</code>（大文字）になっていたり、<code>.jpg.jpg</code>のように二重になっていることがあります。拡張子を表示する設定にしてから確認しましょう。</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        <div class="faq-q-badge">Q</div>文字化けする
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-answer">メモ帳で保存するとき、文字コードが「UTF-8」になっているか確認してください。ほかの文字コードで保存すると日本語が文字化けします。</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        <div class="faq-q-badge">Q</div>ブラウザにコードがそのまま表示される
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-answer">ファイル名が <code>index.html.txt</code> のように、隠れた「.txt」が付いてしまっている可能性があります。拡張子を表示する設定にして、ファイル名を確認・修正してください。</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        <div class="faq-q-badge">Q</div>途中で表示がおかしくなった
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-answer">Geminiに「ひとつ前に戻して」とお願いしてみましょう。修正前の状態に戻せます。</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        <div class="faq-q-badge">Q</div>URLを開くとパスワードを聞かれる
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-answer">Netlifyにログインした状態で公開すると、この問題を避けやすくなります。すでに公開してしまった場合は、Netlifyのサイト設定から公開範囲・パスワードの設定を確認してください。</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-btn" onclick="toggleFaq(this)">
+        <div class="faq-q-badge">Q</div>公開したページを消したい
+        <span class="faq-arrow">▼</span>
+      </button>
+      <div class="faq-answer">Netlifyにログインし、サイトの設定画面からサイトを削除できます。削除すると、そのURLは二度と表示されなくなります。</div>
+    </div>
+
+    <div class="notice">
+      <img src="potz5.png" class="dog-img sm" alt="" />
+      <p>解決しない場合は、ワークショップ中に講師に声をかけてください。<br>「どこで詰まっているか」を画面で見せてもらうのが一番早いです。</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <p>お誕生日ページを作ろう &copy; 2026</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      background: '#07101F',
+      primaryColor: '#1A2F55',
+      primaryTextColor: '#FFFFFF',
+      primaryBorderColor: '#FF7B1C',
+      lineColor: '#FF9B4E',
+      secondaryColor: '#112040',
+      tertiaryColor: '#0D1B35',
+      fontFamily: '-apple-system, BlinkMacSystemFont, Hiragino Sans, Noto Sans JP, sans-serif',
+      fontSize: '14px'
+    }
+  });
+
+  function switchTab(id, btn) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+    window.scrollTo({ top: document.querySelector('.tab-nav-wrap').offsetTop - 10, behavior: 'smooth' });
+  }
+
+  function switchPromptTab(id, btn) {
+    const wrap = btn.closest('.card');
+    wrap.querySelectorAll('.prompt-tab-content').forEach(el => el.classList.remove('active'));
+    wrap.querySelectorAll('.prompt-tab-btn').forEach(el => el.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  function toggleFaq(btn) {
+    btn.closest('.faq-item').classList.toggle('open');
+  }
+
+  function copyPrompt(btn) {
+    const box = btn.closest('.prompt-header').nextElementSibling;
+    const text = box?.querySelector('p')?.innerText || '';
+    navigator.clipboard.writeText(text.trim()).then(() => {
+      btn.textContent = '✓ コピー済み';
+      setTimeout(() => btn.textContent = 'コピー', 1800);
+    });
+  }
+</script>
+</body>
+</html>
