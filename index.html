@@ -960,15 +960,15 @@ flowchart TB
       <div class="step">
         <div class="step-num-badge">2</div>
         <div class="step-body">
-          <h3>Canvasのコードをメモ帳に貼って保存する</h3>
-          <p>Canvasのコードを全部コピー→メモ帳に貼り付け→「名前を付けて保存」で <strong>index.html</strong> という名前にし、種類は「すべてのファイル」、文字コードは「UTF-8」を選びます。</p>
+          <h3>Canvas画面の「ダウンロード」ボタンで保存する</h3>
+          <p>Canvas右上のダウンロードボタン（⬇）をクリックすると、パソコンの「ダウンロード」フォルダにファイルが保存されます。そのファイルを「birthday」フォルダの中に移動してください。ファイル名が <strong>index.html</strong> になっていない場合は、拡張子（.html）はそのままに名前だけ index.html に変更します。</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num-badge">3</div>
         <div class="step-body">
-          <h3>写真3枚を同じフォルダに入れる</h3>
-          <p>お祝いに使いたい写真を3枚選び、ファイル名を <strong>photo1.jpg / photo2.jpg / photo3.jpg</strong> に変更してbirthdayフォルダに入れます。</p>
+          <h3>写真3枚を「birthday」フォルダに入れる</h3>
+          <p>お祝いに使いたい写真を3枚選び、ファイル名を <strong>photo1.jpg / photo2.jpg / photo3.jpg</strong> に変更して、index.htmlと同じ「birthday」フォルダに入れます。</p>
         </div>
       </div>
       <div class="step">
@@ -1076,11 +1076,56 @@ flowchart TB
       <div class="card-h"><span class="dot"></span>完成チェックリスト</div>
       <ul class="checklist">
         <li>つくる：Gemini Canvasでページのコードができた</li>
-        <li>保存：index.html という名前でUTF-8保存できた</li>
-        <li>写真：photo1〜3.jpg を同じフォルダに入れた</li>
+        <li>保存：ダウンロードでき、「birthday」フォルダに保存できた</li>
+        <li>写真：photo1〜3.jpg を「birthday」フォルダに入れた</li>
         <li>公開：Netlify Dropでアップロードし、URLが表示された</li>
         <li>スマホで見られた：自分のパソコン以外の端末でも表示できた</li>
       </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>修正・更新するときの流れ</div>
+      <div class="step-wrap" style="margin-top:8px">
+        <div class="step">
+          <div class="step-num-badge">1</div>
+          <div class="step-body">
+            <h3>Geminiに直したい内容を伝える</h3>
+            <p>例：「文字を大きくして」「写真をもう少し丸くして」など、1つずつお願いします。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num-badge">2</div>
+          <div class="step-body">
+            <h3>修正版をダウンロードして上書きする</h3>
+            <p>Canvasの「ダウンロード」ボタンで保存し、「birthday」フォルダの中の index.html と置き換えます。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num-badge">3</div>
+          <div class="step-body">
+            <h3>まずローカルでテストする</h3>
+            <p>「birthday」フォルダの index.html をダブルクリックし、直したい部分がちゃんと直っているかブラウザで確認します。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num-badge">4</div>
+          <div class="step-body">
+            <h3>Netlify Dropに再アップロードする</h3>
+            <p>問題なければ <a href="https://app.netlify.com/drop" style="color:var(--orange-pale)" target="_blank" rel="noopener">app.netlify.com/drop</a> に「birthday」フォルダをもう一度ドラッグします。同じサイトが自動的に更新されます。</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num-badge">5</div>
+          <div class="step-body">
+            <h3>スマホなどで再読み込みして確認する</h3>
+            <p>すでに開いていたページはキャッシュが残ることがあるので、再読み込み（更新）してから確認しましょう。</p>
+          </div>
+        </div>
+      </div>
+      <div class="info-box">
+        <span style="font-size:18px;flex-shrink:0">💡</span>
+        <span>いきなり公開せず、必ず<strong>ローカルで確認してから</strong>Netlify Dropにアップロードすると、失敗に気づきやすく安心です。</span>
+      </div>
     </div>
 
   </div>
@@ -1112,7 +1157,7 @@ flowchart TB
         <div class="faq-q-badge">Q</div>文字化けする
         <span class="faq-arrow">▼</span>
       </button>
-      <div class="faq-answer">メモ帳で保存するとき、文字コードが「UTF-8」になっているか確認してください。ほかの文字コードで保存すると日本語が文字化けします。</div>
+      <div class="faq-answer">Canvasの「ダウンロード」ボタンで保存したファイルであれば、文字コードは自動的に正しく設定されるので文字化けは起きません。もしメモ帳にコードを貼り付けて保存した場合は、文字コードを「UTF-8」にしてください。</div>
     </div>
 
     <div class="faq-item">
