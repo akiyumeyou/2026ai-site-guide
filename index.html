@@ -633,6 +633,118 @@
     }
     footer a { color: var(--orange-pale); text-decoration: none; }
 
+    /* ===================== GLOSSARY LINK (本文中の用語ジャンプ) ===================== */
+    .glossary-link {
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+      cursor: pointer;
+    }
+    .glossary-link:hover { color: var(--orange-pale); }
+
+    /* ===================== HOUSE ILLUSTRATION (HTML/CSS/JS図解) ===================== */
+    .house-illustration {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      margin: 8px 0 4px;
+    }
+    .house-shape { flex-shrink: 0; width: 180px; }
+    .house-roof-wrap { position: relative; width: 180px; height: 56px; }
+    .house-roof {
+      position: absolute;
+      top: 0; left: 0;
+      width: 0; height: 0;
+      border-left: 90px solid transparent;
+      border-right: 90px solid transparent;
+      border-bottom: 56px solid var(--orange);
+    }
+    .house-roof-icon {
+      position: absolute;
+      bottom: 8px; left: 50%;
+      transform: translateX(-50%);
+      font-size: 22px;
+      filter: drop-shadow(0 0 6px rgba(255,208,96,0.85));
+    }
+    .house-body { width: 180px; }
+    .house-layer {
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--orange-pale);
+      border-left: 2px solid var(--border-dim);
+      border-right: 2px solid var(--border-dim);
+    }
+    .house-layer.css-layer {
+      border-top: 2px solid var(--border-dim);
+      background: repeating-linear-gradient(135deg, var(--navy-light), var(--navy-light) 10px, var(--navy-card) 10px, var(--navy-card) 20px);
+    }
+    .house-layer.html-layer {
+      border-bottom: 2px solid var(--border-dim);
+      border-radius: 0 0 6px 6px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      background:
+        repeating-linear-gradient(0deg, var(--navy-deep), var(--navy-deep) 18px, var(--navy-card) 18px, var(--navy-card) 20px),
+        repeating-linear-gradient(90deg, var(--navy-deep), var(--navy-deep) 18px, var(--navy-card) 18px, var(--navy-card) 20px);
+    }
+    .house-labels { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+    .house-label { font-size: 15px; color: var(--text-sub); line-height: 1.6; }
+    .house-label .term { color: var(--white); font-weight: 800; }
+    .house-label .term.o { color: var(--orange); }
+    @media (max-width: 640px) {
+      .house-illustration { flex-direction: column; text-align: center; }
+      .house-labels { align-items: center; }
+    }
+
+    /* ===================== GLOSSARY CARD ===================== */
+    .glossary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+      gap: 16px;
+      margin-top: 8px;
+    }
+    .glossary-card {
+      position: relative;
+      background: var(--navy-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius);
+      padding: 26px 24px 22px;
+    }
+    .glossary-card.key { border-color: var(--border); }
+    .glossary-key-badge {
+      position: absolute;
+      top: -12px; right: 16px;
+      background: var(--orange);
+      color: var(--white);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+    }
+    .glossary-term { font-size: 21px; font-weight: 900; color: var(--white); margin-bottom: 8px; }
+    .glossary-oneliner { font-size: 14.5px; color: var(--text-sub); margin-bottom: 14px; line-height: 1.65; }
+    .glossary-analogy {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--navy-deep);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-size: 13.5px;
+      color: var(--orange-pale);
+    }
+    .glossary-analogy .icon { font-size: 19px; flex-shrink: 0; }
+    .glossary-card.flash { animation: glossaryFlash 1.6s ease; }
+    @keyframes glossaryFlash {
+      0%   { box-shadow: 0 0 0 3px var(--orange); background: var(--orange-dim2); }
+      100% { box-shadow: 0 0 0 0 transparent; }
+    }
+
     /* ===================== RESPONSIVE ===================== */
     @media (max-width: 600px) {
       .tab-btn { font-size: 14px; padding: 14px 16px; }
@@ -692,6 +804,7 @@
     <button class="tab-btn"        onclick="switchTab('step4', this)">ステップ４</button>
     <button class="tab-btn"        onclick="switchTab('check', this)">チェックリスト</button>
     <button class="tab-btn"        onclick="switchTab('qa',    this)">Q&amp;A</button>
+    <button class="tab-btn" id="navGlossaryBtn" onclick="switchTab('glossary', this)">用語集</button>
   </div>
 </nav>
 
@@ -712,19 +825,19 @@
       <div class="analogy-card">
         <div class="analogy-icon">🏠</div>
         <div class="analogy-title">家</div>
-        <div class="analogy-sub">＝ HTML</div>
+        <div class="analogy-sub glossary-link" onclick="goToGlossary('html')">＝ HTML</div>
         <div class="analogy-desc">サイトの中身（文章・写真）が入っている「家」そのもの。</div>
       </div>
       <div class="analogy-card">
         <div class="analogy-icon">📍</div>
         <div class="analogy-title">住所</div>
-        <div class="analogy-sub">＝ URL</div>
+        <div class="analogy-sub glossary-link" onclick="goToGlossary('url')">＝ URL</div>
         <div class="analogy-desc">家がある場所を示す「住所」。相手に伝えれば訪ねてこられる。</div>
       </div>
       <div class="analogy-card">
         <div class="analogy-icon">🚚</div>
         <div class="analogy-title">配達サービス</div>
-        <div class="analogy-sub">＝ Netlify</div>
+        <div class="analogy-sub glossary-link" onclick="goToGlossary('netlify')">＝ Netlify</div>
         <div class="analogy-desc">住所を調べて、家の中身（ページ）をちゃんと届けてくれるサービス。</div>
       </div>
     </div>
@@ -760,7 +873,7 @@ flowchart TB
 
     <div class="info-box">
       <span style="font-size:18px;flex-shrink:0">💡</span>
-      <span>いちど公開すれば、あとはNetlifyが24時間ページを届けてくれます。<strong>自分のパソコンの電源を切っても、みんなに見てもらえます。</strong></span>
+      <span>いちど<span class="glossary-link" onclick="goToGlossary('publicprivate')">公開</span>すれば、あとは<span class="glossary-link" onclick="goToGlossary('netlify')">Netlify</span>が24時間ページを届けてくれます。<strong>自分のパソコンの電源を切っても、みんなに見てもらえます。</strong></span>
     </div>
 
   </div>
@@ -774,7 +887,7 @@ flowchart TB
       <img src="potz3.png" class="dog-img" alt="" />
       <div class="dog-section-text">
         <div class="sec-tag">STEP 2</div>
-        <h2 class="sec-h2"><span class="o">AI</span>でつくる（Gemini Canvas）</h2>
+        <h2 class="sec-h2"><span class="o glossary-link" onclick="goToGlossary('genai')">AI</span>でつくる（<span class="glossary-link" onclick="goToGlossary('gemini')">Gemini</span> <span class="glossary-link" onclick="goToGlossary('canvas')">Canvas</span>）</h2>
         <p class="sec-lead">下のひな形プロンプトの【　】を埋めるだけ。あとはGeminiにお任せです。</p>
       </div>
     </div>
@@ -825,7 +938,7 @@ flowchart TB
       <div class="step">
         <div class="step-num-badge">3</div>
         <div class="step-body">
-          <h3>下の雛形プロンプトの【　】を埋めて貼り付け、送信</h3>
+          <h3>下の<span class="glossary-link" onclick="goToGlossary('template')">雛形</span><span class="glossary-link" onclick="goToGlossary('prompt')">プロンプト</span>の【　】を埋めて貼り付け、送信</h3>
           <p>4種類のうち、贈る相手に合ったものを選んでください。</p>
         </div>
       </div>
@@ -861,7 +974,7 @@ flowchart TB
           <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
         </div>
         <div class="prompt-box"><p>あなたはWebデザインの先生です。
-初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+初心者でも読めるように、HTML・CSS・JavaScriptを「index.html」という名前の1つのHTMLファイルにまとめて、
 お誕生日をお祝いするページを作ってください。
 
 ■ お祝いする人
@@ -883,8 +996,16 @@ flowchart TB
 ・写真1の説明：【例：家族旅行の写真】
 ・写真2の説明：【例：誕生日ケーキ】
 ・写真3の説明：【例：昔の写真】
-※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
-※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+※ 写真は、index.html と同じ「birthday」フォルダに保存した次の3枚だけを表示してください。
+　 birthday/
+　 ├ index.html
+　 ├ photo1.jpg
+　 ├ photo2.jpg
+　 └ photo3.jpg
+※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
+　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
+※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
+※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
 
 ■ 入れてほしい演出
 1. ページを開くと「Happy Birthday 名前」が大きくふわっと表示される
@@ -894,6 +1015,7 @@ flowchart TB
 5. 背景に風船やハートがゆっくり浮かぶ
 
 ■ 条件
+・ファイル名は必ず「index.html」にする
 ・外部ライブラリは使わない
 ・スマホでもきれいに見える
 ・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
@@ -907,7 +1029,7 @@ flowchart TB
           <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
         </div>
         <div class="prompt-box"><p>あなたはWebデザインの先生です。
-初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+初心者でも読めるように、HTML・CSS・JavaScriptを「index.html」という名前の1つのHTMLファイルにまとめて、
 お誕生日をお祝いするページを作ってください。
 
 ■ お祝いする人
@@ -930,8 +1052,16 @@ flowchart TB
 ・写真1の説明：【例：一緒に旅行した写真】
 ・写真2の説明：【例：誕生日パーティーの写真】
 ・写真3の説明：【例：おもしろい顔をしている写真】
-※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
-※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+※ 写真は、index.html と同じ「birthday」フォルダに保存した次の3枚だけを表示してください。
+　 birthday/
+　 ├ index.html
+　 ├ photo1.jpg
+　 ├ photo2.jpg
+　 └ photo3.jpg
+※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
+　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
+※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
+※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
 
 ■ 入れてほしい演出
 1. ページを開くと絵文字がたくさん飛び跳ねながら「Happy Birthday 名前」が大きく表示される
@@ -941,6 +1071,7 @@ flowchart TB
 5. 背景にカラフルな紙吹雪や星がキラキラ舞う
 
 ■ 条件
+・ファイル名は必ず「index.html」にする
 ・外部ライブラリは使わない
 ・スマホでもきれいに見える
 ・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
@@ -954,7 +1085,7 @@ flowchart TB
           <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
         </div>
         <div class="prompt-box"><p>あなたはWebデザインの先生です。
-初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+初心者でも読めるように、HTML・CSS・JavaScriptを「index.html」という名前の1つのHTMLファイルにまとめて、
 お誕生日をお祝いするページを作ってください。
 
 ■ お祝いする人
@@ -976,8 +1107,16 @@ flowchart TB
 ・写真1の説明：【例：卒業式で撮った写真】
 ・写真2の説明：【例：授業や部活動の写真】
 ・写真3の説明：【例：先生の似顔絵や贈り物の写真】
-※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
-※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+※ 写真は、index.html と同じ「birthday」フォルダに保存した次の3枚だけを表示してください。
+　 birthday/
+　 ├ index.html
+　 ├ photo1.jpg
+　 ├ photo2.jpg
+　 └ photo3.jpg
+※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
+　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
+※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
+※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
 
 ■ 入れてほしい演出
 1. ページを開くと「Happy Birthday 名前」が明朝体でゆっくりと上品に表示される
@@ -987,6 +1126,7 @@ flowchart TB
 5. 背景に星がきらめくアニメーションがゆっくりと流れる
 
 ■ 条件
+・ファイル名は必ず「index.html」にする
 ・外部ライブラリは使わない
 ・スマホでもきれいに見える
 ・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
@@ -1000,7 +1140,7 @@ flowchart TB
           <button class="copy-btn" onclick="copyPrompt(this)">コピー</button>
         </div>
         <div class="prompt-box"><p>あなたはWebデザインの先生です。
-初心者でも読めるように、HTML・CSS・JavaScriptを「1つのHTMLファイル」にまとめて、
+初心者でも読めるように、HTML・CSS・JavaScriptを「index.html」という名前の1つのHTMLファイルにまとめて、
 ペットのお誕生日をお祝いするページを作ってください。
 
 ■ お祝いする子
@@ -1023,8 +1163,16 @@ flowchart TB
 ・写真1の説明：【例：お昼寝している写真】
 ・写真2の説明：【例：お散歩中の写真】
 ・写真3の説明：【例：おやつを食べている写真】
-※ imgタグは src="photo1.jpg" "photo2.jpg" "photo3.jpg" にしてください。
-※ 画像が見つからない時は onerror で https://placehold.co/600x400?text=Photo1 のような仮画像を表示してください。
+※ 写真は、index.html と同じ「birthday」フォルダに保存した次の3枚だけを表示してください。
+　 birthday/
+　 ├ index.html
+　 ├ photo1.jpg
+　 ├ photo2.jpg
+　 └ photo3.jpg
+※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
+　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
+※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
+※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
 
 ■ 入れてほしい演出
 1. ページを開くと「名前、〇歳おめでとう🐾」が大きくふわっと表示される
@@ -1034,6 +1182,7 @@ flowchart TB
 5. 背景に肉球や骨のアイコンがゆっくり浮かぶ
 
 ■ 条件
+・ファイル名は必ず「index.html」にする
 ・外部ライブラリは使わない
 ・スマホでもきれいに見える
 ・コードの各所に「★ここを変えると○○が変わる」という日本語コメントを入れる
@@ -1053,13 +1202,13 @@ flowchart TB
       <div class="dog-section-text">
         <div class="sec-tag">STEP 3</div>
         <h2 class="sec-h2">手元で<span class="o">確認する</span></h2>
-        <p class="sec-lead">Canvasで作ったコードを、自分のパソコンに保存してブラウザで開いてみましょう。</p>
+        <p class="sec-lead"><span class="glossary-link" onclick="goToGlossary('canvas')">Canvas</span>で作った<span class="glossary-link" onclick="goToGlossary('code')">コード</span>を、自分のパソコンに保存して<span class="glossary-link" onclick="goToGlossary('browser')">ブラウザ</span>で開いてみましょう。</p>
       </div>
     </div>
 
     <div class="warn-box">
       <span style="flex-shrink:0">⚠️</span>
-      <span>先に「拡張子を表示する」設定をしておきましょう。エクスプローラーの「表示」タブ→「ファイル名拡張子」にチェックを入れます。これをしないと、あとで <code>.html</code> か <code>.txt</code> か見分けがつきません。</span>
+      <span>先に「<span class="glossary-link" onclick="goToGlossary('ext')">拡張子</span>を表示する」設定をしておきましょう。エクスプローラーの「表示」タブ→「ファイル名拡張子」にチェックを入れます。これをしないと、あとで <code>.html</code> か <code>.txt</code> か見分けがつきません。</span>
     </div>
 
     <div class="mockup">
@@ -1085,14 +1234,14 @@ flowchart TB
       <div class="step">
         <div class="step-num-badge">1</div>
         <div class="step-body">
-          <h3>デスクトップに「birthday」フォルダを作る</h3>
+          <h3>デスクトップに「birthday」<span class="glossary-link" onclick="goToGlossary('folder')">フォルダ</span>を作る</h3>
           <p>右クリック→「新規作成」→「フォルダー」から作成します。</p>
         </div>
       </div>
       <div class="step">
         <div class="step-num-badge">2</div>
         <div class="step-body">
-          <h3>Canvas画面の「ダウンロード」ボタンで保存する</h3>
+          <h3>Canvas画面の「<span class="glossary-link" onclick="goToGlossary('download')">ダウンロード</span>」ボタンで保存する</h3>
           <p>Canvas右上のダウンロードボタン（⬇）をクリックすると、パソコンの「ダウンロード」フォルダにファイルが保存されます。そのファイルを「birthday」フォルダの中に移動してください。ファイル名が <strong>index.html</strong> になっていない場合は、拡張子（.html）はそのままに名前だけ index.html に変更します。</p>
           <div class="mockup">
             <div class="mockup-topbar">
@@ -1132,7 +1281,7 @@ flowchart TB
       <div class="card-h"><span class="dot"></span>フォルダの中身（完成イメージ）</div>
       <div class="folder-diagram">
         <div class="folder-root">📁 birthday</div>
-        <div class="folder-item">📄 index.html</div>
+        <div class="folder-item">📄 <span class="glossary-link" onclick="goToGlossary('indexhtml')">index.html</span></div>
         <div class="folder-item">🖼 photo1.jpg</div>
         <div class="folder-item">🖼 photo2.jpg</div>
         <div class="folder-item">🖼 photo3.jpg</div>
@@ -1150,7 +1299,7 @@ flowchart TB
       <img src="potz2.png" class="dog-img" alt="" />
       <div class="dog-section-text">
         <div class="sec-tag">STEP 4</div>
-        <h2 class="sec-h2"><span class="o">公開する</span>（Netlify Drop）</h2>
+        <h2 class="sec-h2"><span class="o glossary-link" onclick="goToGlossary('publicprivate')">公開する</span>（Netlify Drop）</h2>
         <p class="sec-lead">フォルダをドラッグするだけで、世界中から見られるページになります。</p>
       </div>
     </div>
@@ -1159,7 +1308,7 @@ flowchart TB
       <div class="step">
         <div class="step-num-badge">1</div>
         <div class="step-body">
-          <h3>Netlify Dropを開く</h3>
+          <h3><span class="glossary-link" onclick="goToGlossary('netlify')">Netlify Drop</span>を開く</h3>
           <div class="code-block">https://app.netlify.com/drop</div>
           <p>ログインしておくのがおすすめです。</p>
         </div>
@@ -1186,7 +1335,7 @@ flowchart TB
       <div class="step">
         <div class="step-num-badge">3</div>
         <div class="step-body">
-          <h3>表示されたURLを確認する</h3>
+          <h3>表示された<span class="glossary-link" onclick="goToGlossary('url')">URL</span>を確認する</h3>
           <p>アップロードが終わると、公開されたページのURL（住所）が表示されます。</p>
         </div>
       </div>
@@ -1200,8 +1349,8 @@ flowchart TB
       <div class="step">
         <div class="step-num-badge">5</div>
         <div class="step-body">
-          <h3>更新するとき</h3>
-          <p>直したフォルダを同じサイトに再アップロードし、スマホ側のページを再読み込みすれば最新版になります。</p>
+          <h3><span class="glossary-link" onclick="goToGlossary('deploy')">更新</span>するとき</h3>
+          <p>直したフォルダを同じサイトに再<span class="glossary-link" onclick="goToGlossary('upload')">アップロード</span>し、スマホ側のページを<span class="glossary-link" onclick="goToGlossary('reload')">再読み込み</span>すれば最新版になります。</p>
         </div>
       </div>
     </div>
@@ -1360,6 +1509,65 @@ flowchart TB
   </div>
 </div>
 
+<!-- ===================== 用語集 ===================== -->
+<div id="glossary" class="tab-content">
+  <div class="page">
+
+    <div class="dog-section">
+      <img src="potz4.png" class="dog-img" alt="" />
+      <div class="dog-section-text">
+        <div class="sec-tag">用語集</div>
+        <h2 class="sec-h2">むずかしい言葉を、<span class="o">やさしく</span></h2>
+        <p class="sec-lead">聞きなれない言葉が出てきたら、ここに戻ってきてください。すべて身近なものに例えて説明しています。</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>サイトは3つの言葉でできている</div>
+      <div class="house-illustration">
+        <div class="house-shape">
+          <div class="house-roof-wrap">
+            <div class="house-roof"></div>
+            <span class="house-roof-icon">⚡</span>
+          </div>
+          <div class="house-body">
+            <div class="house-layer css-layer">🎨</div>
+            <div class="house-layer html-layer">&lt;/&gt;</div>
+          </div>
+        </div>
+        <div class="house-labels">
+          <div class="house-label"><span class="term o glossary-link" onclick="goToGlossary('html')">HTML</span> ＝ 骨組み｜文字や写真など、ページの中身</div>
+          <div class="house-label"><span class="term o glossary-link" onclick="goToGlossary('css')">CSS</span> ＝ インテリア｜壁紙や家具のような、見た目のデザイン</div>
+          <div class="house-label"><span class="term o glossary-link" onclick="goToGlossary('js')">JS</span> ＝ スイッチ｜電気のように、ボタンや動きをつくる</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-h"><span class="dot"></span>カテゴリから探す</div>
+      <div class="prompt-tabs">
+        <button class="prompt-tab-btn glossary-cat-btn active" data-cat="materials" onclick="switchPromptTab('gcat-materials', this)">① 材料</button>
+        <button class="prompt-tab-btn glossary-cat-btn" data-cat="files" onclick="switchPromptTab('gcat-files', this)">② ファイル</button>
+        <button class="prompt-tab-btn glossary-cat-btn" data-cat="display" onclick="switchPromptTab('gcat-display', this)">③ 見た目</button>
+        <button class="prompt-tab-btn glossary-cat-btn" data-cat="publish" onclick="switchPromptTab('gcat-publish', this)">④ 公開</button>
+        <button class="prompt-tab-btn glossary-cat-btn" data-cat="ai" onclick="switchPromptTab('gcat-ai', this)">⑤ AI</button>
+      </div>
+
+      <div id="gcat-materials" class="prompt-tab-content active"></div>
+      <div id="gcat-files" class="prompt-tab-content"></div>
+      <div id="gcat-display" class="prompt-tab-content"></div>
+      <div id="gcat-publish" class="prompt-tab-content"></div>
+      <div id="gcat-ai" class="prompt-tab-content"></div>
+    </div>
+
+    <div class="notice">
+      <img src="potz2.png" class="dog-img sm" alt="" />
+      <p>わからない言葉が出てきたら、また<strong>「用語集」タブ</strong>に戻ってきてください。何度でも確認して大丈夫です。</p>
+    </div>
+
+  </div>
+</div>
+
 <!-- ===================== FOOTER ===================== -->
 <footer>
   <p>お誕生日ページを作ろう &copy; 2026</p>
@@ -1410,6 +1618,88 @@ flowchart TB
       btn.textContent = '✓ コピー済み';
       setTimeout(() => btn.textContent = 'コピー', 1800);
     });
+  }
+
+  /* ===================== 用語集 ===================== */
+  // 用語を追加したいときは、この配列に1件足すだけでOK。
+  const GLOSSARY_TERMS = [
+    // ① サイトの材料
+    { id: 'html',     category: 'materials', key: true,  icon: '🏗️', term: 'HTML',              oneliner: 'ページの中身（文字・写真の並び）',            analogy: '家の骨組み' },
+    { id: 'css',      category: 'materials', key: true,  icon: '🎨', term: 'CSS',               oneliner: '見た目（色・大きさ・配置）',                  analogy: '壁紙・インテリア' },
+    { id: 'js',       category: 'materials', key: true,  icon: '⚡', term: 'JavaScript（JS）',    oneliner: '動き（ボタン・紙吹雪）',                      analogy: '電気・スイッチ' },
+    { id: 'code',     category: 'materials', key: false, icon: '📐', term: 'コード',             oneliner: '上の3つを書いた文字の集まり',                 analogy: '設計図' },
+    { id: 'tag',      category: 'materials', key: false, icon: '🏷️', term: 'タグ',               oneliner: 'HTMLの目印 <h1> <img> など',                 analogy: '部屋の名札' },
+    { id: 'comment',  category: 'materials', key: false, icon: '📝', term: 'コメント',           oneliner: 'コード内のメモ（画面には出ない）',            analogy: '付箋' },
+
+    // ② ファイルとフォルダ
+    { id: 'file',     category: 'files', key: false, icon: '📄', term: 'ファイル',           oneliner: '1つのデータ（index.html、photo1.jpg）',        analogy: '書類1枚' },
+    { id: 'folder',   category: 'files', key: false, icon: '🗂️', term: 'フォルダ',           oneliner: 'ファイルを入れる箱',                          analogy: 'クリアファイル' },
+    { id: 'ext',      category: 'files', key: true,  icon: '🏷️', term: '拡張子',             oneliner: 'ファイル名の最後の「.html」「.jpg」＝種類の目印', analogy: '荷物のラベル' },
+    { id: 'indexhtml',category: 'files', key: false, icon: '🚪', term: 'index.html',         oneliner: 'サイトの最初のページ',                        analogy: '玄関' },
+    { id: 'charset',  category: 'files', key: false, icon: '🔤', term: '文字コード（UTF-8）', oneliner: '文字化けしないための保存形式',                analogy: '共通の言葉' },
+
+    // ③ 表示・見た目
+    { id: 'browser',    category: 'display', key: false, icon: '📺', term: 'ブラウザ',                 oneliner: 'サイトを見るアプリ（Chrome、Safari等）',        analogy: 'テレビ' },
+    { id: 'preview',    category: 'display', key: false, icon: '👗', term: 'プレビュー',               oneliner: '完成前のお試し表示',                          analogy: '試着' },
+    { id: 'responsive', category: 'display', key: true,  icon: '🧦', term: 'レスポンシブ',             oneliner: 'スマホ・PCどちらでも自動で見やすく変わる',    analogy: '伸び縮みする服' },
+    { id: 'reload',     category: 'display', key: false, icon: '📰', term: '再読み込み（リロード）',   oneliner: '最新の状態に表示し直す',                      analogy: '新聞の最新号' },
+    { id: 'placeholder',category: 'display', key: false, icon: '🖼️', term: '仮画像（プレースホルダー）', oneliner: '本物の写真を入れる前の代わり',              analogy: '写真立ての見本' },
+
+    // ④ 公開・インターネット
+    { id: 'website',       category: 'publish', key: false, icon: '🏬', term: 'Webサイト',        oneliner: 'ネットで見られるページの集まり',        analogy: 'お店' },
+    { id: 'url',            category: 'publish', key: true,  icon: '📍', term: 'URL',              oneliner: 'サイトの場所',                          analogy: '住所' },
+    { id: 'server',         category: 'publish', key: true,  icon: '🏭', term: 'サーバー',          oneliner: 'ファイルを置いて届ける場所',            analogy: '倉庫＋配達係' },
+    { id: 'hosting',        category: 'publish', key: false, icon: '🏢', term: 'ホスティング',      oneliner: 'サーバーを借りること',                  analogy: '倉庫を借りる' },
+    { id: 'netlify',        category: 'publish', key: false, icon: '📦', term: 'Netlify（Drop）',  oneliner: '無料でサイトを置けるサービス',          analogy: '貸し倉庫' },
+    { id: 'publicprivate',  category: 'publish', key: false, icon: '🔓', term: '公開／非公開',      oneliner: '誰でも見られる／自分だけ',              analogy: '開店／閉店' },
+    { id: 'upload',         category: 'publish', key: false, icon: '📤', term: 'アップロード',      oneliner: '自分のPC → ネットへ送る',               analogy: '荷物を預ける' },
+    { id: 'download',       category: 'publish', key: false, icon: '📥', term: 'ダウンロード',      oneliner: 'ネット → 自分のPCへ取り込む',           analogy: '荷物を受け取る' },
+    { id: 'deploy',         category: 'publish', key: false, icon: '🔄', term: '更新（デプロイ）',  oneliner: '直したものを置き直す',                  analogy: '商品の入れ替え' },
+
+    // ⑤ AI関連
+    { id: 'genai',    category: 'ai', key: false, icon: '🤖', term: '生成AI',              oneliner: '文章やコードを作ってくれるAI',           analogy: 'なんでも書いてくれる助手' },
+    { id: 'gemini',   category: 'ai', key: false, icon: '✨', term: 'Gemini',              oneliner: 'Googleの生成AI',                        analogy: '助手の名前' },
+    { id: 'canvas',   category: 'ai', key: false, icon: '🛠️', term: 'Canvas',              oneliner: 'Gemini内のコード作成＆プレビュー画面',   analogy: '作業机' },
+    { id: 'prompt',   category: 'ai', key: false, icon: '🧾', term: 'プロンプト',           oneliner: 'AIへのお願い文',                        analogy: '注文書' },
+    { id: 'template', category: 'ai', key: false, icon: '📋', term: '雛形（テンプレート）', oneliner: '【　】を埋めるだけのお願い文の型',       analogy: '記入式の用紙' },
+  ];
+
+  function renderGlossaryCard(t) {
+    return `
+      <div class="glossary-card${t.key ? ' key' : ''}" id="glossary-term-${t.id}">
+        ${t.key ? '<div class="glossary-key-badge">⭐ ここは覚えよう</div>' : ''}
+        <div class="glossary-term">${t.term}</div>
+        <div class="glossary-oneliner">${t.oneliner}</div>
+        <div class="glossary-analogy"><span class="icon">${t.icon}</span><span>${t.analogy}</span></div>
+      </div>`;
+  }
+
+  function renderGlossaryGrids() {
+    const categories = ['materials', 'files', 'display', 'publish', 'ai'];
+    categories.forEach(cat => {
+      const container = document.getElementById('gcat-' + cat);
+      if (!container) return;
+      const items = GLOSSARY_TERMS
+        .filter(t => t.category === cat)
+        .sort((a, b) => (b.key === true) - (a.key === true));
+      container.innerHTML = '<div class="glossary-grid">' + items.map(renderGlossaryCard).join('') + '</div>';
+    });
+  }
+  renderGlossaryGrids();
+
+  function goToGlossary(id) {
+    switchTab('glossary', document.getElementById('navGlossaryBtn'));
+    const term = GLOSSARY_TERMS.find(t => t.id === id);
+    if (!term) return;
+    const catBtn = document.querySelector('.glossary-cat-btn[data-cat="' + term.category + '"]');
+    if (catBtn) switchPromptTab('gcat-' + term.category, catBtn);
+    setTimeout(() => {
+      const card = document.getElementById('glossary-term-' + id);
+      if (!card) return;
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      card.classList.add('flash');
+      setTimeout(() => card.classList.remove('flash'), 1600);
+    }, 60);
   }
 </script>
 </body>
