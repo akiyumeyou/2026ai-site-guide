@@ -947,6 +947,7 @@ flowchart TB
         <div class="step-body">
           <h3>右側のプレビューで確認、「お祝いする🎉」を押してみる</h3>
           <p>アニメーションがちゃんと動くか、その場でチェックできます。</p>
+          <p>写真の枠には「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と<strong>文字が出ていれば正常</strong>です。Canvasには写真が入っていないためで、STEP3でフォルダに写真を入れると表示されます。</p>
         </div>
       </div>
       <div class="step">
@@ -954,6 +955,7 @@ flowchart TB
         <div class="step-body">
           <h3>手直しは普通の言葉で1つずつ</h3>
           <p>例：「文字を大きくして」「写真をもう少し丸くして」など、一度に1つだけお願いすると失敗しにくいです。</p>
+          <p>手直しのあとも、写真の枠に案内文が出ていることを確認してください。消えていたら「写真の部分は最初の指定どおりに戻して」と伝えます。</p>
         </div>
       </div>
     </div>
@@ -1002,10 +1004,18 @@ flowchart TB
 　 ├ photo1.jpg
 　 ├ photo2.jpg
 　 └ photo3.jpg
-※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
-　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
-※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
-※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
+※ 写真の部分は、必ず次のHTMLをそのまま使ってください（photo2・photo3 も数字だけ変えて同じ形にする）。
+&lt;div class="photo-frame"&gt;
+  &lt;p class="photo-note"&gt;photo1.jpg を birthday フォルダに入れるとここに写真が出ます&lt;/p&gt;
+  &lt;img src="photo1.jpg" alt="写真1" onerror="this.style.display='none'"&gt;
+&lt;/div&gt;
+　・.photo-frame は position: relative にして高さを持たせ、案内文は枠の中央に置く
+　・img は position: absolute で枠いっぱいに重ね、背景色（白など）をつける（写真があれば案内文は隠れる）
+　・写真が読み込めない時（Canvasのプレビューなど）は onerror で img が消え、案内文が見える
+※ src は "photo1.jpg" "photo2.jpg" "photo3.jpg" のまま、絶対に書き換えないでください。
+　フォルダ名やURLを付けること、仮画像サービス（placehold.co など）・埋め込み画像（data:）・AIが作った画像・絵文字への置き換えは禁止です。
+※ 写真の img は JavaScript で作らず、HTML に直接書いてください。
+※ あとで修正をお願いしたときも、写真の部分はこの形のまま残してください。
 
 ■ 入れてほしい演出
 1. ページを開くと「Happy Birthday 名前」が大きくふわっと表示される
@@ -1058,10 +1068,18 @@ flowchart TB
 　 ├ photo1.jpg
 　 ├ photo2.jpg
 　 └ photo3.jpg
-※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
-　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
-※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
-※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
+※ 写真の部分は、必ず次のHTMLをそのまま使ってください（photo2・photo3 も数字だけ変えて同じ形にする）。
+&lt;div class="photo-frame"&gt;
+  &lt;p class="photo-note"&gt;photo1.jpg を birthday フォルダに入れるとここに写真が出ます&lt;/p&gt;
+  &lt;img src="photo1.jpg" alt="写真1" onerror="this.style.display='none'"&gt;
+&lt;/div&gt;
+　・.photo-frame は position: relative にして高さを持たせ、案内文は枠の中央に置く
+　・img は position: absolute で枠いっぱいに重ね、背景色（白など）をつける（写真があれば案内文は隠れる）
+　・写真が読み込めない時（Canvasのプレビューなど）は onerror で img が消え、案内文が見える
+※ src は "photo1.jpg" "photo2.jpg" "photo3.jpg" のまま、絶対に書き換えないでください。
+　フォルダ名やURLを付けること、仮画像サービス（placehold.co など）・埋め込み画像（data:）・AIが作った画像・絵文字への置き換えは禁止です。
+※ 写真の img は JavaScript で作らず、HTML に直接書いてください。
+※ あとで修正をお願いしたときも、写真の部分はこの形のまま残してください。
 
 ■ 入れてほしい演出
 1. ページを開くと絵文字がたくさん飛び跳ねながら「Happy Birthday 名前」が大きく表示される
@@ -1113,10 +1131,18 @@ flowchart TB
 　 ├ photo1.jpg
 　 ├ photo2.jpg
 　 └ photo3.jpg
-※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
-　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
-※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
-※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
+※ 写真の部分は、必ず次のHTMLをそのまま使ってください（photo2・photo3 も数字だけ変えて同じ形にする）。
+&lt;div class="photo-frame"&gt;
+  &lt;p class="photo-note"&gt;photo1.jpg を birthday フォルダに入れるとここに写真が出ます&lt;/p&gt;
+  &lt;img src="photo1.jpg" alt="写真1" onerror="this.style.display='none'"&gt;
+&lt;/div&gt;
+　・.photo-frame は position: relative にして高さを持たせ、案内文は枠の中央に置く
+　・img は position: absolute で枠いっぱいに重ね、背景色（白など）をつける（写真があれば案内文は隠れる）
+　・写真が読み込めない時（Canvasのプレビューなど）は onerror で img が消え、案内文が見える
+※ src は "photo1.jpg" "photo2.jpg" "photo3.jpg" のまま、絶対に書き換えないでください。
+　フォルダ名やURLを付けること、仮画像サービス（placehold.co など）・埋め込み画像（data:）・AIが作った画像・絵文字への置き換えは禁止です。
+※ 写真の img は JavaScript で作らず、HTML に直接書いてください。
+※ あとで修正をお願いしたときも、写真の部分はこの形のまま残してください。
 
 ■ 入れてほしい演出
 1. ページを開くと「Happy Birthday 名前」が明朝体でゆっくりと上品に表示される
@@ -1169,10 +1195,18 @@ flowchart TB
 　 ├ photo1.jpg
 　 ├ photo2.jpg
 　 └ photo3.jpg
-※ imgタグの src は必ず "photo1.jpg" "photo2.jpg" "photo3.jpg" とファイル名だけを書いてください。
-　（「images/」などのフォルダ名や「https://」で始まるURLは付けない）
-※ Unsplashなどネット上の画像・仮画像サービス（placehold.co など）・AIが作った画像・イラストや絵文字での代用は、絶対に使わないでください。
-※ 写真がまだ入っていない時は、画像の代わりに枠の中へ「photo1.jpg を birthday フォルダに入れるとここに写真が出ます」と文字で表示してください。
+※ 写真の部分は、必ず次のHTMLをそのまま使ってください（photo2・photo3 も数字だけ変えて同じ形にする）。
+&lt;div class="photo-frame"&gt;
+  &lt;p class="photo-note"&gt;photo1.jpg を birthday フォルダに入れるとここに写真が出ます&lt;/p&gt;
+  &lt;img src="photo1.jpg" alt="写真1" onerror="this.style.display='none'"&gt;
+&lt;/div&gt;
+　・.photo-frame は position: relative にして高さを持たせ、案内文は枠の中央に置く
+　・img は position: absolute で枠いっぱいに重ね、背景色（白など）をつける（写真があれば案内文は隠れる）
+　・写真が読み込めない時（Canvasのプレビューなど）は onerror で img が消え、案内文が見える
+※ src は "photo1.jpg" "photo2.jpg" "photo3.jpg" のまま、絶対に書き換えないでください。
+　フォルダ名やURLを付けること、仮画像サービス（placehold.co など）・埋め込み画像（data:）・AIが作った画像・絵文字への置き換えは禁止です。
+※ 写真の img は JavaScript で作らず、HTML に直接書いてください。
+※ あとで修正をお願いしたときも、写真の部分はこの形のまま残してください。
 
 ■ 入れてほしい演出
 1. ページを開くと「名前、〇歳おめでとう🐾」が大きくふわっと表示される
@@ -1272,7 +1306,7 @@ flowchart TB
         <div class="step-num-badge">4</div>
         <div class="step-body">
           <h3>index.html をダブルクリック</h3>
-          <p>ブラウザでページが開けば成功です。「お祝いする🎉」ボタンも押してみましょう。</p>
+          <p>ブラウザでページが開き、<strong>案内文のかわりに写真3枚が表示されれば成功</strong>です。「お祝いする🎉」ボタンも押してみましょう。</p>
         </div>
       </div>
     </div>
@@ -1458,7 +1492,7 @@ flowchart TB
         <div class="faq-q-badge">Q</div>写真が出ない
         <span class="faq-arrow">▼</span>
       </button>
-      <div class="faq-answer">ファイル名の拡張子を確認してください。<code>.png</code> と <code>.jpg</code> を間違えていたり、<code>.JPG</code>（大文字）になっていたり、<code>.jpg.jpg</code>のように二重になっていることがあります。拡張子を表示する設定にしてから確認しましょう。</div>
+      <div class="faq-answer">写真の枠に何が出ているかで、原因がわかります。<br><br><strong>① Canvasのプレビューで案内文が出ている</strong><br>正常です。Canvasには写真が入っていません。ダウンロードして写真をフォルダに入れると表示されます。<br><br><strong>② ダウンロード後も「photo1.jpg を birthday フォルダに入れると…」の案内文が出ている</strong><br>写真の名前か置き場所が違います。index.html と同じ「birthday」フォルダに入っているか確認してください。名前は <code>photo1.jpg</code> のようにぴったり同じにします。<code>.png</code> と <code>.jpg</code> を間違えていたり、<code>.JPG</code>（大文字）や <code>.jpg.jpg</code>（二重）になっていたりすることがよくあります。拡張子を表示する設定にしてから確認しましょう。<br><br><strong>③ 案内文が出ず、別の画像が出ている／何も出ない</strong><br>Geminiが写真の部分を書き換えています。Geminiに「写真の部分は最初の指定どおりに戻して」と伝え、もう一度ダウンロードして index.html を置き換えてください。</div>
     </div>
 
     <div class="faq-item">
